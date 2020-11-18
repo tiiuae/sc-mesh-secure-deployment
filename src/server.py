@@ -50,7 +50,7 @@ def add_message(uuid):
 def add_default_route(ip_gateway):
     inter = netifaces.interfaces()
 
-    command = 'ip route add ' + IP_PREFIX + '.0/16' + 'via ' + ip_gateway + ' dev ' + inter[
+    command = 'ip route add ' + IP_PREFIX + '.0/24' + 'via ' + ip_gateway + ' dev ' + inter[
         -1]  # assuming only 2 interfaces are presented
 
     subprocess.call(command, shell=True)
