@@ -86,7 +86,7 @@ def create_config(response):
     config_file.write('\t' + 'list protocols ' + "'" + 'batadv:' + res['batadv'] + "'" + '\n')
     config_file.write('\t' + 'list protocols ' + "'" + 'babeld:' + res['babeld'] + "'" '\n')
     config_file.write('\t' + 'list protocols ' + "'" + 'bmx7:' + res['bmx7'] + "'" + '\n')
-    config_file.write('\t' + 'option main_ipv4_address ' + "'" + res['addr'] + '/16' + "'")
+    config_file.write('\t' + 'option main_ipv4_address ' + "'" + res['addr'] + '/24' + "'")
 
     config_file.close()
 
