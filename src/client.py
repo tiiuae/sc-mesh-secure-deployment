@@ -33,8 +33,7 @@ def get_secret_message(key):
 
 
 def get_key(key_file, passphrase=None):
-    keys_cache = RSA.import_key(open(key_file).read(), passphrase)
-    return keys_cache
+    return RSA.import_key(open(key_file).read(), passphrase)
 
 
 def decrypt_full(data, private_key, passphrase=None, out_encoding='utf-8'):
