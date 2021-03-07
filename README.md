@@ -8,11 +8,14 @@ This code is a secure provision of mesh network parameters.
 The Server side authenticates nodes validating certificates based on the Elliptic Curve Integrated Encryption Scheme [(ECIES)](https://github.com/tiiuae/cryptolib)
 
 
-Initially, the client sends a request to join the mesh network. This request is attached with node certificates.
+Initially, the client sends a request to join the mesh network.
+This request is attached with node certificates.
 Once the server validates the certificate, it encrypts the mesh parameters and sends them back to the requested node.
 The client detects the OS that is running (Ubuntu or OpenWRT) and sets the specific configuration of the mesh network.
 
-## Installation
+The Ubuntu configuration is based on [mesh_com.](https://github.com/tiiuae/mesh_com)
+
+##Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the dependencies.
 Two different configurations must be run on the server and on the client
