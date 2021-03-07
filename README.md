@@ -15,7 +15,7 @@ The client detects the OS that is running (Ubuntu or OpenWRT) and sets the speci
 
 The Ubuntu configuration is based on [mesh_com.](https://github.com/tiiuae/mesh_com)
 
-##Installation
+## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the dependencies.
 Two different configurations must be run on the server and on the client
