@@ -7,6 +7,11 @@ This code is a secure provision of mesh network parameters.
 
 The Server side authenticates nodes validating certificates based on the Elliptic Curve Integrated Encryption Scheme [(ECIES)](https://github.com/tiiuae/cryptolib)
 
+
+Initially, the client sends a requests to join the mesh network. This request is attached with node certificates. 
+Once the server validates the certificate, it encrypts the mesh parameters and send them back to the requested node. 
+The client detects the OS that is running (Ubuntu or OpenWRT) and sets the specific configuration of the mesh network.
+
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
@@ -53,6 +58,5 @@ On the server side open a web browser and type
 http://127.0.0.1:5000
 ```
 A web page with the authenticated and no-authenticated nodes should be displayed
+
 ![alt text](images/server-screenshot.png)
-
-
