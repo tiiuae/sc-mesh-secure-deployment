@@ -26,7 +26,7 @@ pip install -r requirements/client-requirements.txt
 ```bash
 pip install -r requirements/server-requirements.txt
 ```
-## Usageserver-screenshot.png
+## Usage
 
 On both sides, download the ECIES code
 ```bash
