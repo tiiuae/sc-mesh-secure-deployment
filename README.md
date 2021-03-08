@@ -45,7 +45,7 @@ scp ecc_key.der <user>@<nodeIP>:<path>
 ```
 On the same folder, download this code
 ```bash
-git clone
+git clone https://github.com/martin-tii/mesh-authentication.git
 ```
 1) Run the server
 
