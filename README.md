@@ -33,7 +33,7 @@ pip install -r requirements/server-requirements.txt
 
 On both sides, download the ECIES code
 ```bash
-apt install clang make -y
+apt install clang make git -y
 git clone https://github.com/tiiuae/cryptolib.git
 make
 ```
