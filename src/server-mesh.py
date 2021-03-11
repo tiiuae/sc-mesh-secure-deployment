@@ -3,6 +3,15 @@ from getmac import get_mac_address
 import subprocess
 import netifaces
 import pandas as pd
+import argparse
+
+# Construct the argument parser
+ap = argparse.ArgumentParser()
+
+# Add the arguments to the parser
+ap.add_argument("-c", "--certificate", required=True)
+args = ap.parse_args()
+
 
 app = Flask(__name__)
 
@@ -31,7 +40,7 @@ ADDRESSES = {'00:00:00:00:00:00': '10.20.15.1'}
 
 IP_PREFIX = '10.20.15'
 
-SERVER_CERT = 'client-certificate.cer'
+SERVER_CERT = args.certificate
 
 NOT_AUTH = {}
 

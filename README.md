@@ -35,7 +35,7 @@ On both sides, download the ECIES code
 ```bash
 apt install clang make git -y
 git clone https://github.com/tiiuae/cryptolib.git
-make
+cd cryptolib ; make
 ```
 Create the certificate and provide it to all clients and server
 
@@ -50,11 +50,11 @@ git clone https://github.com/martin-tii/mesh-authentication.git
 1) Run the server
 
 ```bash
-python3 src/server-mesh.py
+python3 src/server-mesh.py -c <cerificate.der>
 ```
 2) On the client node
 ```bash
-python3 src/client/client-mesh.py -c ecc_key.der -s http://<ServerIP>:5000
+python3 src/client/client-mesh.py -c <cerificate.der> -s http://<ServerIP>:5000
 ```
 On the server-side open a web browser and type
 ```bash
