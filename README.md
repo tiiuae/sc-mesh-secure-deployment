@@ -16,37 +16,39 @@ The client detects the OS that is running (Ubuntu or OpenWRT) and sets the speci
 The Ubuntu configuration is based on [mesh_com.](https://github.com/tiiuae/mesh_com)
 
 ## Installation
+Download this code
+```bash
+git clone https://github.com/martin-tii/mesh-authentication.git
+```
+Then, run 
+```bash
+apt install clang make git python3-pip -y
+```
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the dependencies.
 Two different configurations must be run on the server and on the client
 
 ### On the Client Side
 ```bash
-pip install -r requirements/client-requirements.txt
+make client
 ```
-
 ### On the Server-Side
 ```bash
-pip install -r requirements/server-requirements.txt
+make server
 ```
 ## Usage
 
-On both sides, download the ECIES code
-```bash
-apt install clang make git -y
-git clone https://github.com/tiiuae/cryptolib.git
-cd cryptolib ; make
-```
+On both sides: 
 Create the certificate and provide it to all clients and server
-
 ```bash
 make cert
-scp ecc_key.der <user>@<nodeIP>:<path>
 ```
-On the same folder, download this code
+Server and clients must have the same certificate:
+Run this command to copy the certificate from one node the the other
 ```bash
-git clone https://github.com/martin-tii/mesh-authentication.git
+scp <certificate.der> <user>@<nodeIP>:<path>
 ```
+
+
 1) Run the server
 
 ```bash
