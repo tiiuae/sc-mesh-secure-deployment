@@ -106,13 +106,14 @@ def create_config_ubuntu(response):
         new_config_file.write('Description="Gateway Service"\n\n')
         new_config_file.write('[Service]\n')
         new_config_file.write('Type=idle\n')
-        command = 'ExecStart=/usr/local/bin/run-gw.sh'
+        command_gw = 'ExecStart=/usr/local/bin/run-gw.sh'
         subprocess.call('sudo cp src/client/run-gw.sh /usr/local/bin/.', shell=True)
         subprocess.call('sudo chmod 744 /usr/local/bin/run-gw.sh', shell=True)
-        new_config_file.write(command + '\n\n')
+        new_config_file.write(command_gw + '\n\n')
         new_config_file.write('[Install]\n')
         new_config_file.write('WantedBy=multi-user.target\n')
         new_config_file.close()
+        subprocess.call('sudo chmod 744 /usr/local/bin/run-sw.sh', shell=True)
     else:
         default_route = 'route add default gw ' + gw + ' bat0'
         subprocess.call(default_route, shell=True)
@@ -131,7 +132,7 @@ def final_settings_ubuntu():
     subprocess.call('sudo systemctl stop network-manager.service', shell=True)
     subprocess.call('sudo systemctl disable network-manager.service', shell=True)
     subprocess.call('sudo systemctl disable wpa_supplicant.service', shell=True)
-    # subprocess.call('sudo cp src/client/mesh_init.sh /usr/local/bin/.', shell=True)
+    subprocess.call('sudo cp src/client/mesh_init.sh /usr/local/bin/.', shell=True)
     subprocess.call('sudo chmod 744 /usr/local/bin/mesh_init.sh', shell=True)
     subprocess.call('sudo chmod 664 /etc/systemd/system/mesh.service', shell=True)
     subprocess.call('sudo systemctl enable mesh.service', shell=True)
