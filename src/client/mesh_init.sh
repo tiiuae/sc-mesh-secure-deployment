@@ -13,7 +13,7 @@ function help
     echo "	<freq>"
     echo
     echo "example:"
-    echo "sudo ./mesh_init2.sh 192.168.1.2 00:11:22:33:44:55 1234567890 mymesh 5220 wlan1 "
+    echo "sudo ./mesh_init2.sh 192.168.1.2 00:11:22:33:44:55 1234567890 mymesh 5180 wlan1 "
     exit
 }
 

@@ -28,7 +28,7 @@ aux_ubuntu = {
     "enc": "wep",  # "encryption (wep, wpa2, wpa3, sae)"
     "ap_mac": "00:11:22:33:44:55",  # "bssid for mesh network"
     "country": "fi",  # "Country code, sets tx power limits and supported channels"
-    "frequency": "5220",  # "wifi channel frequency, depends on the country code and HW"
+    "frequency": "5180",  #5180 wifi channel frequency, depends on the country code and HW"
     # "ip": "192.168.1.1",              #"select unique IP address"
     "subnet": "255.255.255.0",  # "subnet mask"
     "tx_power": "30",
