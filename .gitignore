@@ -1,0 +1,5 @@
+*.der
+*.o
+*.a
+*_decrypt
+*_encrypt
