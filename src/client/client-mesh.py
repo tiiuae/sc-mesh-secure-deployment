@@ -93,7 +93,6 @@ def create_config_ubuntu(response):
     prefix = '.'.join(prefix)
     gw = prefix + '.1'
     config_file = open('/etc/systemd/system/mesh.service', 'w')
-    # config_file = open('/tmp/test.txt', 'w')
     config_file.write('[Unit]\n')
     config_file.write('Description="Mesh Service"\n\n')
     config_file.write('[Service]\n')

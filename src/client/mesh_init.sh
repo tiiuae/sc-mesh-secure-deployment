@@ -25,6 +25,7 @@ fi
 
 echo "Killing wpa_supplicant..."
 killall wpa_supplicant 2>/dev/null
+nmcli network off
 
 
 
