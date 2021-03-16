@@ -47,12 +47,13 @@ def decrypt_reponse():  # assuming that data is on a file called payload.enc gen
     new_list = aux_list[40:64]
     joined_list = ''.join(new_list)
     output_dict = joined_list.replace("\'", '"')
-    print('Decrypted Message: ', output_dict)#    res =  json.loads(output_dict)
+    print('Decrypted Message: ', output_dict)  # res =  json.loads(output_dict)
     return output_dict
+
 
 def create_config_openwrt(response):
     res = json.loads(response)
-    if res['gateway'] == True:
+    if res['gateway']:
         config_file = open('/etc/config/lime-node', 'a+')
     else:
         nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gaves me the nodeId.

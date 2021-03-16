@@ -49,14 +49,14 @@ scp <certificate.der> <user>@<nodeIP>:<path>
 ```
 
 
-1) Run the server
+1) Run the server as sudo
 
 ```bash
-python3 src/server-mesh.py -c <cerificate.der>
+sudo python3 src/server-mesh.py -c <cerificate.der>
 ```
-2) On the client node
+2) On the client node as sudo
 ```bash
-python3 src/client/client-mesh.py -c <cerificate.der> -s http://<ServerIP>:5000
+sudo python3 src/client/client-mesh.py -c <cerificate.der> -s http://<ServerIP>:5000
 ```
 On the server-side open a web browser and type
 ```bash
