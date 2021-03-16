@@ -65,7 +65,7 @@ def add_message(uuid):
         aux['addr'] = ip_mesh
         SECRET_MESSAGE = json.dumps(aux)
         print(SECRET_MESSAGE)
-        proc = subprocess.Popen(['./ecies_encrypt', SERVER_CERT, SECRET_MESSAGE], stdout=subprocess.PIPE,
+        proc = subprocess.Popen(['src/ecies_encrypt', SERVER_CERT, SECRET_MESSAGE], stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
         enc = open('payload.enc', 'rb')
         encrypt_all = enc.read()

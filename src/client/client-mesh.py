@@ -92,18 +92,18 @@ def create_config_ubuntu(response):
     prefix = address.split('.')[:-1]
     prefix = '.'.join(prefix)
     gw = prefix + '.1'
-    # config_file = open('/etc/systemd/system/mesh.service', 'w')
-    config_file = open('/tmp/test.txt', 'w')
+    config_file = open('/etc/systemd/system/mesh.service', 'w')
+    # config_file = open('/tmp/test.txt', 'w')
     config_file.write('[Unit]\n')
     config_file.write('Description="Mesh Service"\n\n')
     config_file.write('[Service]\n')
     config_file.write('Type=idle\n')
-    command = 'ExecStart=/usr/local/bin/mesh_init2.sh ' + address + ' ' + res['ap_mac'] + ' ' + res['key'] + ' ' + res[
+    command = 'ExecStart=/usr/local/bin/mesh_init.sh ' + address + ' ' + res['ap_mac'] + ' ' + res['key'] + ' ' + res[
         'ssid'] + ' ' + res['frequency'] + ' ' + interface
     if res['gateway']:
-        command += ' ; /bin/bash /usr/local/bin/gw_ubuntu.sh'
-        subprocess.call('sudo cp ./gw_ubuntu.sh /usr/local/bin/.', shell=True)
-        subprocess.call('sudo chmod 744 /usr/local/bin/gw_ubuntu.sh', shell=True)
+        command += ' ; /bin/bash /usr/local/bin/run-gw.sh'
+        subprocess.call('sudo cp src/client/run-gw.sh /usr/local/bin/.', shell=True)
+        subprocess.call('sudo chmod 744 /usr/local/bin/run-gw.sh', shell=True)
     else:
         default_route = 'route add default gw ' + gw + ' bat0'
         subprocess.call(default_route, shell=True)
@@ -116,12 +116,12 @@ def create_config_ubuntu(response):
 
 
 def final_settings_ubuntu():
-    # this setting assume that mesh_init.sh and gw_ubuntu.sh
+    # this setting assume that mesh_init.sh and run-gw.sh
     subprocess.call('sudo nmcli networking off', shell=True)
     subprocess.call('sudo systemctl stop network-manager.service', shell=True)
     subprocess.call('sudo systemctl disable network-manager.service', shell=True)
     subprocess.call('sudo systemctl disable wpa_supplicant.service', shell=True)
-    subprocess.call('sudo cp ./mesh_init.sh /usr/local/bin/.', shell=True)
+    subprocess.call('sudo cp src/client/mesh_init.sh /usr/local/bin/.', shell=True)
     subprocess.call('sudo chmod 744 /usr/local/bin/mesh_init.sh', shell=True)
     subprocess.call('sudo chmod 664 /etc/systemd/system/mesh.service', shell=True)
     subprocess.call('sudo systemctl enable mesh.service', shell=True)
