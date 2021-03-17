@@ -51,8 +51,8 @@ network={
     bssid=$2
     mode=1
     frequency=$5
-    #wep_key0=$3
-    #wep_tx_keyidx=0
+    wep_key0=$3
+    wep_tx_keyidx=0
     key_mgmt=NONE
 }
 EOF
