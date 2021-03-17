@@ -1,11 +1,10 @@
-import os
-import requests
+import argparse
 import json
 import subprocess
 import time
 
-import argparse
 import netifaces
+import requests
 
 # Construct the argument parser
 ap = argparse.ArgumentParser()
@@ -106,13 +105,14 @@ def create_config_ubuntu(response):
                 new_config_file.write('Description="Gateway Service"\n\n')
                 new_config_file.write('[Service]\n')
                 new_config_file.write('Type=idle\n')
-                command_gw = 'ExecStart=/usr/local/bin/run-gw.sh'
-                subprocess.call('sudo cp src/client/run-gw.sh /usr/local/bin/.', shell=True)
-                subprocess.call('sudo chmod 744 /usr/local/bin/run-gw.sh', shell=True)
+                command_gw = 'ExecStart=/usr/bin/run-gw.sh'
+                subprocess.call('sudo cp src/client/run-gw.sh /usr/bin/.', shell=True)
+                subprocess.call('sudo chmod 744 /usr/bin/run-gw.sh', shell=True)
                 new_config_file.write(command_gw + '\n\n')
                 new_config_file.write('[Install]\n')
                 new_config_file.write('WantedBy=multi-user.target\n')
             subprocess.call('sudo chmod 644 /etc/systemd/system/gw.service', shell=True)
+            subprocess.call('systemctl enable gw.service', shell=True)
         else:
             default_route = 'route add default gw ' + gw + ' bat0'
             subprocess.call(default_route, shell=True)

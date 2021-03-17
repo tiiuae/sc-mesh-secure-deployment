@@ -57,12 +57,6 @@ network={
 }
 EOF
 
-#iwconfig $6 mode ad-hoc
-#iwconfig $6 essid $4
-#iwconfig $6 ap $2
-#iwconfig $6 channel $5
-#iwconfig $6 key $3
-
 echo "$6 up.."
 ip link set $6 up
 #wpa_supplicant -B -i $6 -c /var/run/wpa_supplicant-adhoc.conf -D nl80211 -C /var/run/wpa_supplicant/

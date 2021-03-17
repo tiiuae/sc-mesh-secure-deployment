@@ -74,7 +74,7 @@ def add_message(uuid):
     else:
         NOT_AUTH[mac] = ip_address
         print("Not Valid Certificate")
-        return '404'
+        return 'Not Valid Certificate'
 
 
 
