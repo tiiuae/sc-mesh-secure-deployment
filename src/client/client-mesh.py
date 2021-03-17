@@ -93,34 +93,32 @@ def create_config_ubuntu(response):
     prefix = address.split('.')[:-1]
     prefix = '.'.join(prefix)
     gw = prefix + '.1'
-    config_file = open('/etc/systemd/system/mesh.service', 'w')
-    config_file.write('[Unit]\n')
-    config_file.write('Description="Mesh Service"\n\n')
-    config_file.write('[Service]\n')
-    config_file.write('Type=idle\n')
-    command = 'ExecStart=/usr/local/bin/mesh_init.sh ' + address + ' ' + res['ap_mac'] + ' ' + res['key'] + ' ' + res[
-        'ssid'] + ' ' + res['frequency'] + ' ' + interface
-    if res['gateway']:
-        new_config_file = open('/etc/systemd/system/gw.service', 'w')
-        new_config_file.write('[Unit]\n')
-        new_config_file.write('Description="Gateway Service"\n\n')
-        new_config_file.write('[Service]\n')
-        new_config_file.write('Type=idle\n')
-        command_gw = 'ExecStart=/usr/local/bin/run-gw.sh'
-        subprocess.call('sudo cp src/client/run-gw.sh /usr/local/bin/.', shell=True)
-        subprocess.call('sudo chmod 744 /usr/local/bin/run-gw.sh', shell=True)
-        new_config_file.write(command_gw + '\n\n')
-        new_config_file.write('[Install]\n')
-        new_config_file.write('WantedBy=multi-user.target\n')
-        new_config_file.close()
-        subprocess.call('sudo chmod 744 /usr/local/bin/run-sw.sh', shell=True)
-    else:
-        default_route = 'route add default gw ' + gw + ' bat0'
-        subprocess.call(default_route, shell=True)
-    config_file.write(command + '\n\n')
-    config_file.write('[Install]\n')
-    config_file.write('WantedBy=multi-user.target\n')
-    config_file.close()
+    with open('/etc/systemd/system/mesh.service', 'w') as config_file:
+        config_file.write('[Unit]\n')
+        config_file.write('Description="Mesh Service"\n\n')
+        config_file.write('[Service]\n')
+        config_file.write('Type=idle\n')
+        command = 'ExecStart=/usr/local/bin/mesh_init.sh ' + address + ' ' + res['ap_mac'] + ' ' + res['key'] + ' ' + res[
+            'ssid'] + ' ' + res['frequency'] + ' ' + interface
+        if res['gateway']:
+            with open('/etc/systemd/system/gw.service', 'w') as new_config_file:
+                new_config_file.write('[Unit]\n')
+                new_config_file.write('Description="Gateway Service"\n\n')
+                new_config_file.write('[Service]\n')
+                new_config_file.write('Type=idle\n')
+                command_gw = 'ExecStart=/usr/local/bin/run-gw.sh'
+                subprocess.call('sudo cp src/client/run-gw.sh /usr/local/bin/.', shell=True)
+                subprocess.call('sudo chmod 744 /usr/local/bin/run-gw.sh', shell=True)
+                new_config_file.write(command_gw + '\n\n')
+                new_config_file.write('[Install]\n')
+                new_config_file.write('WantedBy=multi-user.target\n')
+            subprocess.call('sudo chmod 644 /etc/systemd/system/gw.service', shell=True)
+        else:
+            default_route = 'route add default gw ' + gw + ' bat0'
+            subprocess.call(default_route, shell=True)
+        config_file.write(command + '\n\n')
+        config_file.write('[Install]\n')
+        config_file.write('WantedBy=multi-user.target\n')
     nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gives the nodeId.
     command = 'sudo hostnamectl set-hostname node' + str(nodeId)
     subprocess.call(command, shell=True)

@@ -3,3 +3,4 @@
 *.a
 *_decrypt
 *_encrypt
+.idea/
