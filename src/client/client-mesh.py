@@ -128,8 +128,11 @@ def create_config_ubuntu(response):
         config_file.write('[Install]\n')
         config_file.write('WantedBy=multi-user.target\n')
     nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gives the nodeId.
-    command = 'sudo hostnamectl set-hostname node' + str(nodeId)
-    subprocess.call(command, shell=True)
+    command_hostname = 'sudo hostnamectl set-hostname node' + str(nodeId)
+    subprocess.call(command_hostname, shell=True)
+    command_hostname_host = 'echo ' + '"' + address + '\t' + str(nodeId) + '"' + ' >' + '/etc/hosts'
+    subprocess.call(command_hostname_host, shell=True)
+
 
 
 def final_settings_ubuntu():
