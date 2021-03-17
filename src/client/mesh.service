@@ -1,9 +1,0 @@
-[Unit]
-Description="Mesh Service"
-
-[Service]
-Type=idle
-ExecStart=/usr/local/bin/mesh_init2.sh 192.168.1.7 00:11:22:33:44:55 1234567890 mymesh 5180 wlan1
-
-[Install]
-WantedBy=multi-user.target

@@ -85,6 +85,26 @@ def get_interfaces():
     return list(interface)[0]
 
 
+def ubuntu_gw():
+    with open('/etc/systemd/system/gw.service', 'w') as new_config_file:
+        new_config_file.write('[Unit]\n')
+        new_config_file.write('Description="Gateway Service"\n\n')
+        new_config_file.write('[Service]\n')
+        new_config_file.write('Type=idle\n')
+        command_gw = 'ExecStart=/usr/bin/run-gw.sh'
+        subprocess.call('sudo cp src/client/run-gw.sh /usr/bin/.', shell=True)
+        subprocess.call('sudo chmod 744 /usr/bin/run-gw.sh', shell=True)
+        new_config_file.write(command_gw + '\n\n')
+        new_config_file.write('[Install]\n')
+        new_config_file.write('WantedBy=multi-user.target\n')
+    subprocess.call('sudo chmod 644 /etc/systemd/system/gw.service', shell=True)
+    subprocess.call('systemctl enable gw.service', shell=True)
+    copy = 'sudo cp tools/wpa_tools/wpa_supplicant_client_AP.conf /etc/wpa_supplicant/wpa_supplicant-wlan0.conf'
+    subprocess.call(copy, shell=True)
+    subprocess.call('chmod 600 /etc/wpa_supplicant/wpa_supplicant-wlan0.conf', shell=True)
+    subprocess.call('systemctl enable wpa_supplicant@wlan0.service', shell=True)
+
+
 def create_config_ubuntu(response):
     interface = get_interfaces()
     res = json.loads(response)
@@ -97,22 +117,10 @@ def create_config_ubuntu(response):
         config_file.write('Description="Mesh Service"\n\n')
         config_file.write('[Service]\n')
         config_file.write('Type=idle\n')
-        command = 'ExecStart=/usr/local/bin/mesh_init.sh ' + address + ' ' + res['ap_mac'] + ' ' + res['key'] + ' ' + res[
-            'ssid'] + ' ' + res['frequency'] + ' ' + interface
+        command = 'ExecStart=/usr/local/bin/mesh_init.sh ' + address + ' ' + res['ap_mac'] + ' ' + res['key'] + ' ' \
+                  + res['ssid'] + ' ' + res['frequency'] + ' ' + interface
         if res['gateway']:
-            with open('/etc/systemd/system/gw.service', 'w') as new_config_file:
-                new_config_file.write('[Unit]\n')
-                new_config_file.write('Description="Gateway Service"\n\n')
-                new_config_file.write('[Service]\n')
-                new_config_file.write('Type=idle\n')
-                command_gw = 'ExecStart=/usr/bin/run-gw.sh'
-                subprocess.call('sudo cp src/client/run-gw.sh /usr/bin/.', shell=True)
-                subprocess.call('sudo chmod 744 /usr/bin/run-gw.sh', shell=True)
-                new_config_file.write(command_gw + '\n\n')
-                new_config_file.write('[Install]\n')
-                new_config_file.write('WantedBy=multi-user.target\n')
-            subprocess.call('sudo chmod 644 /etc/systemd/system/gw.service', shell=True)
-            subprocess.call('systemctl enable gw.service', shell=True)
+            ubuntu_gw()
         else:
             default_route = 'route add default gw ' + gw + ' bat0'
             subprocess.call(default_route, shell=True)
