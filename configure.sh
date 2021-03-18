@@ -82,14 +82,19 @@ function server {
   echo '> Configuring the server...'
   # Create a certificate
   make certificate
+  # Make the server
+  make server
   # Advertise the server using avahi (zeroconf)
   avahi-publish-service mesh_server _http._tcp 5000
   python3 src/server-mesh.py -c src/ecc_key.der
 }
 
 function client {
-  echo '> Please connect to the same AP as the server...'
+  echo '> Configuring the client...'
+  # Make the server
+  make client
   # Connect to the same AP as the server
+  echo '> Please connect to the same AP as the server...'
   ap_connect
   echo -n '> Server discovery...'
   # get server IPv4 and hostname
