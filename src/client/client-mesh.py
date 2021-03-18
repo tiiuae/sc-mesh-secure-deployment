@@ -130,7 +130,7 @@ def create_config_ubuntu(response):
     nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gives the nodeId.
     command_hostname = 'sudo hostnamectl set-hostname node' + str(nodeId)
     subprocess.call(command_hostname, shell=True)
-    command_hostname_host = 'echo ' + '"' + address + '\t' + str(nodeId) + '"' + ' >' + '/etc/hosts'
+    command_hostname_host = 'echo ' + '"' + address + '\t' + 'node' + str(nodeId) + '"' + ' >' + '/etc/hosts'
     subprocess.call(command_hostname_host, shell=True)
 
 

@@ -24,7 +24,7 @@ aux_openwrt = {'batadv': '120', 'babeld': '17',
 aux_ubuntu = {
     "api_version": 1,  # "interface version for future purposes"
     "ssid": "gold",  # "0-32 octets, UTF-8, shlex.quote chars limiting"
-    "key": "foobar",  # "key for the network"
+    "key": "1234567890",  # "key for the network"
     "enc": "wep",  # "encryption (wep, wpa2, wpa3, sae)"
     "ap_mac": "00:11:22:33:44:55",  # "bssid for mesh network"
     "country": "fi",  # "Country code, sets tx power limits and supported channels"
