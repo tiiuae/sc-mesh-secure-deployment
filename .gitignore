@@ -1,6 +1,7 @@
 *.der
-*.o
-*.a
 *_decrypt
 *_encrypt
+*.o
+*.a
 .idea/
+*.enc
