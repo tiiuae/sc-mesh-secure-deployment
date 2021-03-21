@@ -103,6 +103,10 @@ def ubuntu_gw():
     subprocess.call(copy, shell=True)
     subprocess.call('chmod 600 /etc/wpa_supplicant/wpa_supplicant-wlan0.conf', shell=True)
     subprocess.call('systemctl enable wpa_supplicant@wlan0.service', shell=True)
+    subprocess.call('sudo sysctl -w net.ipv4.ip_forward=1', shell=True)
+    subprocess.call('sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE', shell=True) #assuming that wlan0 is the internet
+    subprocess.call('sudo iptables -A FORWARD -i wlan0 -o bat0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT', shell=True)
+    subprocess.call('sudo iptables -A FORWARD -i bat0 -o wlan0 -j ACCEPT', shell=True)
 
 
 def create_config_ubuntu(response):
@@ -111,7 +115,7 @@ def create_config_ubuntu(response):
     address = res['addr']
     prefix = address.split('.')[:-1]
     prefix = '.'.join(prefix)
-    gw = prefix + '.1'
+    gw = prefix + '.2'
     with open('/etc/systemd/system/mesh.service', 'w') as config_file:
         config_file.write('[Unit]\n')
         config_file.write('Description="Mesh Service"\n\n')
@@ -124,9 +128,27 @@ def create_config_ubuntu(response):
         else:
             default_route = 'route add default gw ' + gw + ' bat0'
             subprocess.call(default_route, shell=True)
+            with open('/etc/systemd/system/default.service', 'w') as config_default:
+                config_default.write('[Unit]\n')
+                config_default.write('Description="IP Route Default Service"\n\n')
+                config_default.write('[Service]\n')
+                config_default.write('Type=idle\n')
+                command_default = 'ExecStart=/usr/local/bin/default.sh '
+                config_default.write(command_default + '\n\n')
+                config_default.write('[Install]\n')
+                config_default.write('WantedBy=multi-user.target\n')
+            with open('/usr/local/bin/default.sh', 'w') as default_script:
+                default_script.write('#!/bin/bash\n')
+                default_script.write('sleep 5\n')
+                default_script.write('ip route add default via ' + gw + '\n')
+                subprocess.call('sudo chmod 744 /usr/local/bin/default.sh', shell=True)
+                subprocess.call('sudo chmod 664 /etc/systemd/system/default.service', shell=True)
+                subprocess.call('sudo systemctl enable default.service', shell=True)
+
         config_file.write(command + '\n\n')
         config_file.write('[Install]\n')
         config_file.write('WantedBy=multi-user.target\n')
+
     nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gives the nodeId.
     command_hostname = 'sudo hostnamectl set-hostname node' + str(nodeId)
     subprocess.call(command_hostname, shell=True)
