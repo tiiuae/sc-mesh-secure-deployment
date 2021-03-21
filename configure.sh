@@ -130,6 +130,8 @@ sudo ufw allow ssh
 sudo nmcli networking on
 # Provision the node with required packages
 command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon"
+# Clone this repo
+git clone https://github.com/martin-tii/mesh-authentication.git
 
 PARAMS=""
 while (( "$#" )); do
