@@ -85,8 +85,8 @@ function server {
   # Make the server
   make server
   # Advertise the server using avahi (zeroconf)
-  avahi-publish-service mesh_server _http._tcp 5000
-  python3 src/server-mesh.py -c src/ecc_key.der
+  avahi-publish-service mesh_server _http._tcp 5000 &
+  sudo python3 src/server-mesh.py -c src/ecc_key.der
 }
 
 function client {
@@ -117,7 +117,7 @@ function client {
   fi
 
   echo '> Configuring the client and connecting to server...'
-  python3 src/client/client-mesh.py -c src/ecc_key.der -s http://$server_ip:5000
+  sudo python3 src/client/client-mesh.py -c src/ecc_key.der -s http://$server_ip:5000
 }
 
 
