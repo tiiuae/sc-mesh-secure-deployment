@@ -85,7 +85,7 @@ function server {
   # Make the server
   make server
   # Advertise the server using avahi (zeroconf)
-  avahi-publish-service mesh_server _http._tcp 5000
+  avahi-publish-service mesh_server _http._tcp 5000 &
   python3 src/server-mesh.py -c src/ecc_key.der
 }
 
