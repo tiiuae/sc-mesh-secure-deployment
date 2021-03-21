@@ -61,10 +61,10 @@ function ap_connect {
 
 function ap_create {
   echo '> Creating a Mesh Access Point...'
-  cd tools
+  cd tools/wpa_tools
   chmod +x access_point_wpa_supplicant.sh
   bash access_point_wpa_supplicant.sh
-  cd ..
+  cd ../..
 }
 
 function access_point {
