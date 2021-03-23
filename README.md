@@ -1,68 +1,81 @@
 # mesh-authentication
 
+## About
+This code provides provisioning and authentication services for a WiFi mesh network employing [BATMAN-adv](https://www.open-mesh.org/projects/batman-adv/wiki) at layer-2 on Ubuntu, and is based on the configuration provided [here](https://github.com/tiiuae/mesh_com) ([Technology Innovation Institute (TII)](https://tii.ae)).
+
+The Server side authenticates nodes validating certificates based on the Elliptic Curve Integrated Encryption Scheme (ECIES) [here](https://github.com/tiiuae/cryptolib).
+
 ## Introduction
-This code is a secure provision of mesh network parameters.
+
+Initially, the client sends a request to join the mesh network. This request is attached with node certificates. Once the server validates the certificate, it encrypts the mesh parameters and sends them back to the requested node. The client detects the OS that is running (Ubuntu or OpenWRT) and sets the specific configuration of the mesh network.
 
 ![alt text](images/Diagram.png?style=centerme)
 
-The Server side authenticates nodes validating certificates based on the Elliptic Curve Integrated Encryption Scheme [(ECIES)](https://github.com/tiiuae/cryptolib)
-
-
-Initially, the client sends a request to join the mesh network.
-This request is attached with node certificates.
-Once the server validates the certificate, it encrypts the mesh parameters and sends them back to the requested node.
-The client detects the OS that is running (Ubuntu or OpenWRT) and sets the specific configuration of the mesh network.
-
-The Ubuntu configuration is based on [mesh_com.](https://github.com/tiiuae/mesh_com)
 
 ## Installation
-Download this code
+To get started, either
+
+1. Copy the *install.sh* script to the home folder of your mounted Ubuntu drive.
+2. On your host machine, copy download the install.sh script from this repo into your home folder.
+
+Once you have done this, startup your host machine and run intall.sh.
+
 ```bash
-git clone https://github.com/martin-tii/mesh-authentication.git
-```
-Then, run 
-```bash
-apt install clang make git python3-pip -y
+cd ~
+./install.sh
 ```
 
-Two different configurations must be run on the server and on the client
+This script will do the following...
+
+1. Give you the option to connect to an access point (*N.B. This should be the same network as your server*).
+2. Download all required packages.
+3. Clone **this** repository (https://github.com/martin-tii/mesh-authentication.git)
+
+Once this process is complete, you should now have a git repo called **mesh-authentication** in your home directory alongside the install.sh script.
+
+```bash
+cd mesh-authentication
+```
+
+Using the *configure.sh* script, you can now set up two different configurations, **server** and **client**, as well as either connect to an access point or set your machine up as an access point.
+
+```bash
+./configure.sh --help
+```
+
+### On the Server-Side
+Your server will provide the necessary authentication certificates for you mesh network, as well as avahi services to allow clients to autodiscover the authentication server and automatically fetch these certificates. The *configure.sh* script should guide you through the process. To set your machine up as a server, please run...
+
+```bash
+./configure.sh -s
+```
 
 ### On the Client Side
-```bash
-make client
-```
-### On the Server-Side
-```bash
-make server
-```
-## Usage
+Likewise, the *configure.sh* script should guide you through the process of setting your host up as a mesh client.
 
-On both sides: 
-Create the certificate and provide it to all clients and server
-```bash
-make cert
-```
-Server and clients must have the same certificate:
-Run this command to copy the certificate from one node the the other
-```bash
-scp <certificate.der> <user>@<nodeIP>:<path>
-```
+1. It will automatically try to discover the server through avahi in order to fetch the certificates **(make sure you are connected to the same network as the server during this process!)**.
+2. The **FIRST** node to connect to the server will automatically be set up as the mesh gateway, thus providing the mesh with internet access.
 
-
-1) Run the server as sudo
+To set your machine up as a client, please run...
 
 ```bash
-sudo python3 src/server-mesh.py -c <cerificate.der>
+./configure.sh -c
 ```
-2) On the client node as sudo
+
+### Setup a Client as an Access Point
+To set your client up as an access point, the configuration script has an *-ap* option that allows you to either **connect to** or **create** an access point. Run the configuration script as follows...
+
+
 ```bash
-sudo python3 src/client/client-mesh.py -c <cerificate.der> -s http://<ServerIP>:5000
+./configure.sh -ap
 ```
-On the server-side open a web browser and type
+
+### USage
+On the server-side open a web browser and type...
+
 ```bash
 http://127.0.0.1:5000
 ```
 A web page with the authenticated and no-authenticated nodes should be displayed
 
 ![alt text](images/server-screenshot.png?style=centerme)
-
