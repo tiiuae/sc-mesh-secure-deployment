@@ -11,17 +11,6 @@ exit 1
 
 #-----------------------------------------------------------------------------#
 
-function command_exists {
-  # check if command(s) exists and fail otherwise
-  for cmd in $1; do
-    command -v "$cmd" >/dev/null 2>&1
-    if [[ $cmd -ne 0 ]]; then
-      echo "WARN: Require dependency "$cmd" but it's not installed. Installing..."
-      sudo apt install --no-install-recommends $cmd
-    fi
-  done
-}
-
 function menu_from_array()
 {
   select choice; do
@@ -63,7 +52,7 @@ function ap_create {
   echo '> Creating a Mesh Access Point...'
   cd tools/wpa_tools
   chmod +x access_point_wpa_supplicant.sh
-  bash access_point_wpa_supplicant.sh
+  sudo bash access_point_wpa_supplicant.sh
   cd ../..
 }
 
@@ -94,22 +83,22 @@ function client {
   # Make the server
   make client
   # Connect to the same AP as the server
-  echo '> Please connect to the same AP as the server...'
-  ap_connect
+  read -p "> We need to be connect to the same network as the server... Connect to an Access Point? (Y/N): " confirm
+  if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
+    ap_connect
+  fi
   echo -n '> Server discovery...'
   # get server IPv4 and hostname
   while ! [ "$server_details" ] ; do
-    server_details=$(timeout 5 avahi-browse -rptfl _http._tcp | awk -F';' '$1 == "=" && $3 == "IPv4" && $4 == "mesh_server" {print $8 " " $7}')
+    server_details=$(timeout 7 avahi-browse -rptfl _http._tcp | awk -F';' '$1 == "=" && $3 == "IPv4" && $4 == "mesh_server" {print $8 " " $7}')
   done
   # split ip/host into separate vars
   server_details=($(sed -r 's/\b.local\b//g' <<< $server_details))
   server_ip=${server_details[0]}
   server_host=${server_details[1]}
-  echo " $server_host@$server_ip"
-
-  read -p "> Do you wish to fetch the certificate from the server? (Y/N): " confirm
-  [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]
-  if [ -n "${confirm}" ]; then
+  echo "> We will use src/ecc_key.der if it already exists, or we can try and fetch it..."
+  read -p "> Do you want to fetch the certificate from the server $server_host@$server_ip? (Y/N): " confirm
+  if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
     echo '> Fetching certificate from server...'
     read -p "- Server Username: " server_user
     # pull the key from the server

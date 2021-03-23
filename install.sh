@@ -3,11 +3,13 @@
 function command_exists {
   # check if command(s) exists and fail otherwise
   for cmd in $1; do
-    echo $cmd
-    command -v "$cmd" >/dev/null 2>&1
-    if [[ $cmd -ne 1 ]]; then
+    echo -n "> Checking $cmd installed... "
+    if ! command -v $cmd &> /dev/null; then
+      echo "FALSE"
       echo "WARN: Require dependency "$cmd" but it's not installed. Installing..."
       sudo apt install --no-install-recommends $cmd -y
+    else
+      echo "TRUE"
     fi
   done
 }
@@ -46,12 +48,18 @@ function ap_connect {
   sudo dhclient -v $choice
 }
 
-echo '> Allow ssh and turn on netmanager so we can connect to this node'
+#-----------------------------------------------------------------------------#
+echo '> Allow ssh and turn on netmanager so we can connect to this node...'
 sudo ufw allow ssh
 sudo nmcli networking on
-# Connect to AP
-ap_connect
+# # Connect to AP
+read -p "> Connect to an Access Point? (Y/N): " confirm
+if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
+  ap_connect
+fi
 # Provision the node with required packages
+echo "> Checking required packages..."
 command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon"
 # Clone this repo
+echo "> Cloning..."
 git clone https://github.com/martin-tii/mesh-authentication.git
