@@ -53,13 +53,13 @@ echo '> Allow ssh and turn on netmanager so we can connect to this node...'
 sudo ufw allow ssh
 sudo nmcli networking on
 # # Connect to AP
-read -p "> Connect to an Access Point? (Y/N): " confirm
+read -p "> We need to be connect to the same network as the server... Connect to an Access Point? (Y/N): " confirm
 if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
   ap_connect
 fi
 # Provision the node with required packages
 echo "> Checking required packages..."
-command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon"
+command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon isc-dhcp-server"
 # Clone this repo
 echo "> Cloning..."
 git clone https://github.com/martin-tii/mesh-authentication.git
