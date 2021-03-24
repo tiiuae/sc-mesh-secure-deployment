@@ -62,16 +62,23 @@ To set your machine up as a client, please run...
 ./configure.sh -c
 ```
 
-### Setup a Client as an Access Point
-To set your client up as an access point, the configuration script has an *-ap* option that allows you to either **connect to** or **create** an access point. Run the configuration script as follows...
+Please note that when the configuration is complete **the node will reboot** and automatically connect to the BATMAN-adv L2 network. You now have three options:
+
+1. Leave the client as a L2 router with BATMAN-adv.
+2. Set a secondary wlan interface as a WiFi Access Point to allow you to connect STA devices to the network.
+3. Set a secondary wlan interface to connect to a WiFi AP and act as gateway.
+
+### Setup a Client as an Access Point / Gateway
+
+To set your client up as an access point, the configuration script has an *-ap* option that allows you to either **connect to** or **create** an Access Point. Run the configuration script as follows...
 
 
 ```bash
 ./configure.sh -ap
 ```
 
-### USage
-On the server-side open a web browser and type...
+### Usage
+On the server open a web browser and type...
 
 ```bash
 http://127.0.0.1:5000
