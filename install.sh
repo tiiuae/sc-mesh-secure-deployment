@@ -59,7 +59,7 @@ if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
 fi
 # Provision the node with required packages
 echo "> Checking required packages..."
-command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon isc-dhcp-server"
+command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon isc-dhcp-server alfred batctl"
 # Clone this repo
 echo "> Cloning..."
 git clone https://github.com/martin-tii/mesh-authentication.git

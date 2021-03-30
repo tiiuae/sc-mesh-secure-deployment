@@ -1,9 +1,9 @@
 # mesh-authentication
 
 ## About
-This code provides provisioning and authentication services for a WiFi mesh network employing [BATMAN-adv](https://www.open-mesh.org/projects/batman-adv/wiki) at layer-2 on Ubuntu, and is based on the configuration provided [here](https://github.com/tiiuae/mesh_com) ([Technology Innovation Institute (TII)](https://tii.ae)).
+This code provides provisioning and authentication services for a Wi-Fi mesh network employing [BATMAN-adv](https://www.open-mesh.org/projects/batman-adv/wiki) at layer-2 on Ubuntu, and is based on the configuration provided [here](https://github.com/tiiuae/mesh_com), from: [Technology Innovation Institute (TII)](https://tii.ae).
 
-The Server side authenticates nodes validating certificates based on the Elliptic Curve Integrated Encryption Scheme (ECIES) [here](https://github.com/tiiuae/cryptolib).
+The Server side authenticates nodes validating certificates based on the Elliptic Curve Integrated Encryption Scheme (ECIES). The code can be found [here](https://github.com/tiiuae/cryptolib).
 
 ## Introduction
 
@@ -18,7 +18,7 @@ To get started, either
 1. Copy the *install.sh* script to the home folder of your mounted Ubuntu drive.
 2. On your host machine, copy download the install.sh script from this repo into your home folder.
 
-Once you have done this, startup your host machine and run intall.sh.
+Once you have done this, startup your host machine and run install.sh.
 
 ```bash
 cd ~
@@ -65,8 +65,8 @@ To set your machine up as a client, please run...
 Please note that when the configuration is complete **the node will reboot** and automatically connect to the BATMAN-adv L2 network. You now have three options:
 
 1. Leave the client as a L2 router with BATMAN-adv.
-2. Set a secondary wlan interface as a WiFi Access Point to allow you to connect STA devices to the network.
-3. Set a secondary wlan interface to connect to a WiFi AP and act as gateway.
+2. Set a secondary wlan interface as a Wi-Fi Access Point to allow you to connect STA devices to the network.
+3. Set a secondary wlan interface to connect to a Wi-Fi AP and act as gateway.
 
 ### Setup a Client as an Access Point / Gateway
 
