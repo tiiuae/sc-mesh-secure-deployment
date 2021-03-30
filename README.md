@@ -29,7 +29,7 @@ This script will do the following...
 
 1. Give you the option to connect to an access point (*N.B. This should be the same network as your server*).
 2. Download all required packages.
-3. Clone **this** repository (https://github.com/martin-tii/mesh-authentication.git)
+3. Clone **this** repository (https://github.com/tiiuae/sc-mesh-secure-deployment.git)
 
 Once this process is complete, you should now have a git repo called **mesh-authentication** in your home directory alongside the install.sh script.
 
