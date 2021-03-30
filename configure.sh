@@ -52,7 +52,7 @@ function ap_create {
   echo '> Creating a Mesh Access Point...'
   cd tools/wpa_tools
   chmod +x access_point_wpa_supplicant.sh
-  sudo bash access_point_wpa_supplicant.sh
+  sudo bash access_point_wpa_supplicant.sh wlan0
   cd ../..
 }
 
@@ -66,6 +66,10 @@ function access_point {
     ap_create
   fi
 }
+
+
+
+
 
 function server {
   echo '> Configuring the server...'
