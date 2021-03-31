@@ -4,6 +4,7 @@ function help {
 echo " ./configure.sh"
 echo "     -s               configure as server"
 echo "     -c               configure as client"
+echo "     -ap              connect/configure Access Point"
 echo "     --help           this help menu"
 echo ""
 exit 1
@@ -33,6 +34,17 @@ network={
 EOF
 }
 
+function create_ap_conf {
+cat <<EOF > tools/wpa_tools/access-point.conf
+  network={
+    ssid="$1"
+    mode=2
+    key_mgmt=WPA-PSK
+    psk="$2"
+    frequency=2437
+}
+EOF
+}
 
 #-----------------------------------------------------------------------------#
 
@@ -53,6 +65,10 @@ function ap_create {
   echo '> Please choose from the list of available interfaces...'
   interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|^[^0-9]"{print $2}'))
   menu_from_array "${interfaces_arr[@]}"
+  read -p "- SSID: " ssid
+  read -p "- Password: " password
+  echo "Password must be eight (8) characters lenght"
+  create_ap_conf $ssid $password
   cd tools/wpa_tools
   chmod +x access_point_wpa_supplicant.sh
   sudo bash access_point_wpa_supplicant.sh $choice
@@ -69,9 +85,6 @@ function access_point {
     ap_create
   fi
 }
-
-
-
 
 
 function server {
