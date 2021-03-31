@@ -50,9 +50,12 @@ function ap_connect {
 
 function ap_create {
   echo '> Creating a Mesh Access Point...'
+  echo '> Please choose from the list of available interfaces...'
+  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|^[^0-9]"{print $2}'))
+  menu_from_array "${interfaces_arr[@]}"
   cd tools/wpa_tools
   chmod +x access_point_wpa_supplicant.sh
-  sudo bash access_point_wpa_supplicant.sh wlan0
+  sudo bash access_point_wpa_supplicant.sh $choice
   cd ../..
 }
 
