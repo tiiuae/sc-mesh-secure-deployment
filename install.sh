@@ -62,4 +62,4 @@ echo "> Checking required packages..."
 command_exists "git make python3-pip batctl ssh clang libssl-dev net-tools iperf3 avahi-daemon avahi-dnsconfd avahi-utils libnss-mdns bmon isc-dhcp-server alfred batctl"
 # Clone this repo
 echo "> Cloning..."
-git clone https://github.com/martin-tii/mesh-authentication.git
+git clone https://github.com/tiiuae/sc-mesh-secure-deployment.git
