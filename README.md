@@ -1,4 +1,4 @@
-# mesh-authentication
+# sc-mesh-secure-deployment
 
 ## About
 This code provides provisioning and authentication services for a Wi-Fi mesh network employing [BATMAN-adv](https://www.open-mesh.org/projects/batman-adv/wiki) at layer-2 on Ubuntu, and is based on the configuration provided [here](https://github.com/tiiuae/mesh_com), from: [Technology Innovation Institute (TII)](https://tii.ae).
