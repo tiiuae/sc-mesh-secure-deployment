@@ -63,7 +63,7 @@ function ap_connect {
 function ap_create {
   echo '> Creating a Mesh Access Point...'
   echo '> Please choose from the list of available interfaces...'
-  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|^[^0-9]"{print $2}'))
+  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|bat|^[^0-9]"{print $2}'))
   menu_from_array "${interfaces_arr[@]}"
   read -p "- SSID: " ssid
   read -p "- Password: " password
@@ -77,8 +77,8 @@ function ap_create {
 
 function access_point {
   echo '> Do you wish to...'
-  hotspot_arr=('Connect to an Access Point?' 'Create a hotspot?')
-  menu_from_array "${hotspot_arr[@]}"
+  ap_arr=('Connect to an Access Point?' 'Create an Access Point?')
+  menu_from_array "${ap_arr[@]}"
   if [ $REPLY == "1" ]; then
     ap_connect
   elif [[ $REPLY == "2" ]]; then
