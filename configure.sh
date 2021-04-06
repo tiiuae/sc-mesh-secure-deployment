@@ -132,7 +132,7 @@ function client {
 
 
 #-----------------------------------------------------------------------------#
-echo '=== SSRC Mesh PoC Configuration ==='
+echo '=== sc-mesh-secure-deployment-configure ==='
 
 PARAMS=""
 while (( "$#" )); do

@@ -27,6 +27,26 @@ function menu_from_array()
   done
 }
 
+# TODO: Do for more than one interface.
+function rename_interfaces {
+inf_arr=($(ip -o link | awk '$2 ~ "wl" && $2 !~ "wlan"  {print substr($2, 1, length($2)-1) "," $(NF-2)}'))
+COUNTER=2
+for i in "${inf_arr[@]}"
+do
+inf_arr=($(sed -r 's/,/\n/g' <<< $inf_arr))
+inf_name=${inf_arr[0]}
+inf_mac=${inf_arr[1]}
+ip link set $inf_name down
+echo "Renaming dev $inf_name to wlan$COUNTER (mac=$inf_mac) and adding to /etc/udev/rules.d/70-persistent-net.rules"
+COUNTER=$(( COUNTER + 1 ))
+cat <<EOF > /etc/udev/rules.d/70-persistent-net.rules
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="$inf_mac", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="wlan*", NAME="wlan$COUNTER"
+EOF
+sudo udevadm control --reload-rules && udevadm trigger --type=devices --action=add
+ip link set wlan$COUNTER up
+done
+}
+
 function create_wpa_supplicant_conf {
 cat <<EOF > wpa_supplicant_client_AP.conf
 network={
@@ -42,17 +62,23 @@ function ap_connect {
   read -p "- Password: " password
   create_wpa_supplicant_conf $ssid $password
   echo '> Please choose from the list of available interfaces...'
-  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|^[^0-9]"{print $2}'))
+  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|bat|^[^0-9]"{print $2}'))
   menu_from_array "${interfaces_arr[@]}"
   sudo wpa_supplicant -B -i $choice -c wpa_supplicant_client_AP.conf
   sudo dhclient -v $choice
 }
 
 #-----------------------------------------------------------------------------#
+echo '== sc-mesh-secure-deployment INSTALL =='
+# Rename interfaces
+read -p "> Do you want to incrementally name your wlan interfaces? (Y/N): " confirm
+if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
+  rename_interfaces
+fi
 echo '> Allow ssh and turn on netmanager so we can connect to this node...'
 sudo ufw allow ssh
 sudo nmcli networking on
-# # Connect to AP
+# Connect to AP
 read -p "> We need to be connect to the same network as the server... Connect to an Access Point? (Y/N): " confirm
 if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
   ap_connect
