@@ -54,7 +54,7 @@ function ap_connect {
   read -p "- Password: " password
   create_wpa_supplicant_conf $ssid $password
   echo '> Please choose from the list of available interfaces...'
-  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|^[^0-9]"{print $2}'))
+  interfaces_arr=($(ip link | awk -F: '$0 !~ "lo|vir|doc|eth|bat|^[^0-9]"{print $2}'))
   menu_from_array "${interfaces_arr[@]}"
   sudo wpa_supplicant -B -i $choice -c tools/wpa_tools/wpa_supplicant_client_AP.conf
   sudo dhclient -v $choice
@@ -77,7 +77,7 @@ function ap_create {
 
 function access_point {
   echo '> Do you wish to...'
-  hotspot_arr=('Connect to a hotspot?' 'Create a hotspot?')
+  hotspot_arr=('Connect to an Access Point?' 'Create a hotspot?')
   menu_from_array "${hotspot_arr[@]}"
   if [ $REPLY == "1" ]; then
     ap_connect
@@ -122,7 +122,7 @@ function client {
     echo '> Fetching certificate from server...'
     read -p "- Server Username: " server_user
     # pull the key from the server
-    scp $server_user@$server_ip:/home/$server_user/mesh-authentication/src/ecc_key.der src/ecc_key.der
+    scp $server_user@$server_ip:/home/$server_user/sc-mesh-secure-deployment/src/ecc_key.der src/ecc_key.der
   fi
 
   echo '> Configuring the client and connecting to server...'

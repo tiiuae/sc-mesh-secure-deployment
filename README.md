@@ -16,7 +16,7 @@ Initially, the client sends a request to join the mesh network. This request is 
 To get started, either
 
 1. Copy the *install.sh* script to the home folder of your mounted Ubuntu drive.
-2. On your host machine, copy download the install.sh script from this repo into your home folder.
+2. On your host machine, copy download the *install.sh* script from this repo into your home folder.
 
 Once you have done this, startup your host machine and run install.sh.
 
@@ -31,10 +31,10 @@ This script will do the following...
 2. Download all required packages.
 3. Clone **this** repository (https://github.com/tiiuae/sc-mesh-secure-deployment.git)
 
-Once this process is complete, you should now have a git repo called **mesh-authentication** in your home directory alongside the install.sh script.
+Once this process is complete, you should now have a git repo called **sc-mesh-secure-deployment** in your home directory alongside the install.sh script.
 
 ```bash
-cd mesh-authentication
+cd sc-mesh-secure-deployment
 ```
 
 Using the *configure.sh* script, you can now set up two different configurations, **server** and **client**, as well as either connect to an access point or set your machine up as an access point.
@@ -44,7 +44,7 @@ Using the *configure.sh* script, you can now set up two different configurations
 ```
 
 ### On the Server-Side
-Your server will provide the necessary authentication certificates for you mesh network, as well as avahi services to allow clients to autodiscover the authentication server and automatically fetch these certificates. The *configure.sh* script should guide you through the process. To set your machine up as a server, please run...
+Your server will provide the necessary authentication certificates for you mesh network, as well as avahi services to allow clients to autodiscover the authentication server and automatically fetch these certificates. The *configure.sh* script should guide you through the process. The server must be executed on the */home/<username>/sc-mesh-secure-deployment* path. To set your machine up as a server, please run...
 
 ```bash
 ./configure.sh -s
