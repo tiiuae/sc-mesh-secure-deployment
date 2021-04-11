@@ -5,6 +5,7 @@ import time
 
 import netifaces
 import requests
+from termcolor import colored
 
 # Construct the argument parser
 ap = argparse.ArgumentParser()
@@ -33,10 +34,13 @@ def get_data(cert_file, os):
     message = '/api/add_message/' + os
     response = requests.post(URL + message,
                              files={'key': open(cert_file, 'rb')})
-    print('Encrypted Message: ' + str(response.content))
-
-    with open('payload.enc', 'wb') as file:
-        file.write(response.content)
+    if response.content == b'Not Valid Certificate':
+        print(colored('Not Valid Certificate', 'red'))
+        exit()
+    else:
+        print('Encrypted Message: ' + str(response.content))
+        with open('payload.enc', 'wb') as file:
+            file.write(response.content)
 
 
 def decrypt_reponse():  # assuming that data is on a file called payload.enc generated on the function get_data

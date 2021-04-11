@@ -1,9 +1,12 @@
-from flask import Flask, request, jsonify, json, render_template
+from flask import Flask, request, json
 from getmac import get_mac_address
 import subprocess
 import netifaces
 import pandas as pd
 import argparse
+from termcolor import colored
+import pathlib
+
 
 # Construct the argument parser
 ap = argparse.ArgumentParser()
@@ -11,7 +14,6 @@ ap = argparse.ArgumentParser()
 # Add the arguments to the parser
 ap.add_argument("-c", "--certificate", required=True)
 args = ap.parse_args()
-
 
 app = Flask(__name__)
 
@@ -28,7 +30,7 @@ aux_ubuntu = {
     "enc": "wep",  # "encryption (wep, wpa2, wpa3, sae)"
     "ap_mac": "00:11:22:33:44:55",  # "bssid for mesh network"
     "country": "fi",  # "Country code, sets tx power limits and supported channels"
-    "frequency": "5180",  #5180 wifi channel frequency, depends on the country code and HW"
+    "frequency": "5180",  # 5180 wifi channel frequency, depends on the country code and HW"
     # "ip": "192.168.1.1",              #"select unique IP address"
     "subnet": "255.255.255.0",  # "subnet mask"
     "tx_power": "30",
@@ -54,7 +56,7 @@ def add_message(uuid):
     print("Requester IP: " + ip_address)
     mac = get_mac_address(ip=ip_address)
     if localCert.read() == receivedKey:  # validating certificate. Comparing the local with the received
-        print('Valide Certificate')
+        print(colored('Valid Certificate', 'green'))
         ip_mesh = verify_addr(mac)
         aux = aux_ubuntu if uuid == 'Ubuntu' else aux
         if ip_mesh == IP_PREFIX + '.2':  # First node, then gateway
@@ -67,15 +69,17 @@ def add_message(uuid):
         print(SECRET_MESSAGE)
         proc = subprocess.Popen(['src/ecies_encrypt', SERVER_CERT, SECRET_MESSAGE], stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
+        file = pathlib.Path("payload.enc")
+        if not file.exists():
+            pathlib.Path('payload.enc').touch()
         enc = open('payload.enc', 'rb')
         encrypt_all = enc.read()
         print(encrypt_all)
         return encrypt_all
     else:
         NOT_AUTH[mac] = ip_address
-        print("Not Valid Certificate")
+        print(colored("Not Valid Certificate", 'red'))
         return 'Not Valid Certificate'
-
 
 
 def add_default_route(ip_gateway):
@@ -102,6 +106,7 @@ def verify_addr(mac):
 
 def printing_auth():
     return ADDRESSES
+
 
 def printing_no_auth():
     return NOT_AUTH
