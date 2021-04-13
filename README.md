@@ -59,7 +59,7 @@ Likewise, the *configure.sh* script should guide you through the process of sett
 To set your machine up as a client, please run...
 
 ```bash
-./configure.sh -c
+sudo ./configure.sh -c
 ```
 
 Please note that when the configuration is complete **the node will reboot** and automatically connect to the BATMAN-adv L2 network. You now have three options:
