@@ -43,7 +43,7 @@ def get_data(cert_file, os):
             file.write(response.content)
 
 
-def decrypt_reponse():  # assuming that data is on a file called payload.enc generated on the function get_data
+def decrypt_response():  # assuming that data is on a file called payload.enc generated on the function get_data
     proc = subprocess.Popen(['src/ecies_decrypt', args.certificate], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = proc.communicate()
     aux_list = [element.decode() for element in out.split()]
@@ -108,8 +108,10 @@ def ubuntu_gw():
     subprocess.call('chmod 600 /etc/wpa_supplicant/wpa_supplicant-wlan0.conf', shell=True)
     subprocess.call('systemctl enable wpa_supplicant@wlan0.service', shell=True)
     subprocess.call('sudo sysctl -w net.ipv4.ip_forward=1', shell=True)
-    subprocess.call('sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE', shell=True) #assuming that wlan0 is the internet
-    subprocess.call('sudo iptables -A FORWARD -i wlan0 -o bat0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT', shell=True)
+    subprocess.call('sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE',
+                    shell=True)  # assuming that wlan0 is the internet
+    subprocess.call('sudo iptables -A FORWARD -i wlan0 -o bat0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT',
+                    shell=True)
     subprocess.call('sudo iptables -A FORWARD -i bat0 -o wlan0 -j ACCEPT', shell=True)
 
 
@@ -153,13 +155,12 @@ def create_config_ubuntu(response):
         config_file.write('[Install]\n')
         config_file.write('WantedBy=multi-user.target\n')
 
-    nodeId = int(res['addr'].split('.')[-1])  - 1 # the IP is sequential, then it gives the nodeId.
+    nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gives the nodeId.
     # nodeId = int(res['addr'].split('.')[-1]) - 1  # the IP is sequential, then it gives the nodeId.
     command_hostname = 'sudo hostnamectl set-hostname node' + str(nodeId)
     subprocess.call(command_hostname, shell=True)
     command_hostname_host = 'echo ' + '"' + address + '\t' + 'node' + str(nodeId) + '"' + ' >' + '/etc/hosts'
     subprocess.call(command_hostname_host, shell=True)
-
 
 
 def final_settings_ubuntu():
@@ -185,7 +186,7 @@ def final_settings_openwrt():
 if __name__ == "__main__":
     os = get_os()
     get_data(args.certificate, os)
-    res = decrypt_reponse()
+    res = decrypt_response()
     if os == 'Ubuntu':
         create_config_ubuntu(res)
         final_settings_ubuntu()
