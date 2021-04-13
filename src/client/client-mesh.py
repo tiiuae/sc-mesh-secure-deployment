@@ -26,12 +26,12 @@ def get_os():
     for element in out.split():
         aux = element.decode('utf-8')
         if 'Ubuntu' in aux:
-            os = aux
-    return os
+            OS = aux
+    return OS
 
 
-def get_data(cert_file, os):
-    message = '/api/add_message/' + os
+def get_data(cert_file, OS):
+    message = '/api/add_message/' + OS
     response = requests.post(URL + message,
                              files={'key': open(cert_file, 'rb')})
     if response.content == b'Not Valid Certificate':
@@ -184,12 +184,12 @@ def final_settings_openwrt():
 
 
 if __name__ == "__main__":
-    os = get_os()
-    get_data(args.certificate, os)
+    OS = get_os()
+    get_data(args.certificate, OS)
     res = decrypt_response()
-    if os == 'Ubuntu':
+    if OS == 'Ubuntu':
         create_config_ubuntu(res)
         final_settings_ubuntu()
-    if os == 'openwrt':
+    if OS == 'openwrt':
         create_config_openwrt(res)
         final_settings_openwrt()
