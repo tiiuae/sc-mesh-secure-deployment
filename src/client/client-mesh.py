@@ -12,7 +12,7 @@ ap = argparse.ArgumentParser()
 
 # Add the arguments to the parser
 ap.add_argument("-s", "--server", required=True, help="Server IP:Port Address. Ex: 'http://192.168.15.14:5000'")
-ap.add_argument("-c", "--certificate", required=True)
+ap.add_argument("-c", "--certificate", help="Certificate previously generated ex: ecc_keys.der", required=True)
 args = ap.parse_args()
 
 # URL = 'https://192.168.15.14:5000' #
